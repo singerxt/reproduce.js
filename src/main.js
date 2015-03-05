@@ -1,3 +1,4 @@
+'use strict';
 var mouseMove = require('./mouseMove'),
     mouseClick = require('./mouseClick'),
     scrollMove = require('./scrollMove'),

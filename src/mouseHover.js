@@ -1,4 +1,5 @@
-/*global require, window, console, module, document, setTimeout */
+/*global require, window, console, module, setTimeout */
+'use strict';
 var mouseHover = {},
     eventSim = require('./eventSimulation');
 
@@ -10,7 +11,6 @@ mouseHover.data = [];
 
 mouseHover.pushData = function (e) {
   var timeStamp = e.timeStamp - this.getInitDate;
-  console.log(e.type);
   mouseHover.data.push({
     type: e.type,
     target: e.target,
@@ -23,20 +23,21 @@ mouseHover.pushData = function (e) {
 mouseHover.record = function () {
   mouseHover.setInitDate();
   window.onmouseover = mouseHover.pushData.bind(this);
-  window.onmouseout = mouseHover.pushData.bind(this);
 };
 
 mouseHover.stop = function () {
   window.onmouseover = null;
-  window.onmouseout = null;
 };
 
 mouseHover.play = function () {
-  for(var i = 0; i < mouseHover.data.length; i++) {
+  for(var i = 0; i < mouseHover.data.length - 1; i++) {
     (function(index, mouseHover, eventSim) {
       setTimeout(function() {
-        eventSim.mouseover(mouseHover.data[index].posX, mouseHover.data[index].posY, mouseHover.data[index].type);
+        eventSim.mouseover(mouseHover.data[index].posX, mouseHover.data[index].posY, 'mouseover');
       }, mouseHover.data[index].time);
+      setTimeout(function () {
+        eventSim.mouseover(mouseHover.data[index].posX, mouseHover.data[index].posY, 'mouseout');
+      }, mouseHover.data[index + 1].time - 200);
     })(i, mouseHover, eventSim);
   }
 };

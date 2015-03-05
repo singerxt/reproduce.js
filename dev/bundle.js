@@ -1,10 +1,10 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/mateusz/Desktop/reproduce/src/eventSimulation.js":[function(require,module,exports){
-/*global require, window, console, module, document, setTimeout, $ */
-
+/*global window, console, module, document, setTimeout, $ */
+'use strict';
 var eventSim = {};
 
 eventSim.click = function (x,y){
-  var ev = document.createEvent("MouseEvent"),
+  var ev = document.createEvent('MouseEvent'),
       el = document.elementFromPoint(x + 20,y);
   
   /*
@@ -34,13 +34,13 @@ eventSim.click = function (x,y){
 };
 
 eventSim.mouseover = function (x,y,type) {
-  var ev = document.createEvent("MouseEvent"),
-      el = document.elementFromPoint(x - 20,y);
-  $(el).trigger(type.toString());
+  var el = document.elementFromPoint(x - 20,y);
+  $(el).trigger(type);
 };
 
 module.exports = eventSim;
 },{}],"/Users/mateusz/Desktop/reproduce/src/main.js":[function(require,module,exports){
+'use strict';
 var mouseMove = require('./mouseMove'),
     mouseClick = require('./mouseClick'),
     scrollMove = require('./scrollMove'),
@@ -113,7 +113,8 @@ mouseClick.play = function () {
 
 module.exports = mouseClick;
 },{"./eventSimulation":"/Users/mateusz/Desktop/reproduce/src/eventSimulation.js"}],"/Users/mateusz/Desktop/reproduce/src/mouseHover.js":[function(require,module,exports){
-/*global require, window, console, module, document, setTimeout */
+/*global require, window, console, module, setTimeout */
+'use strict';
 var mouseHover = {},
     eventSim = require('./eventSimulation');
 
@@ -125,7 +126,6 @@ mouseHover.data = [];
 
 mouseHover.pushData = function (e) {
   var timeStamp = e.timeStamp - this.getInitDate;
-  console.log(e.type);
   mouseHover.data.push({
     type: e.type,
     target: e.target,
@@ -138,20 +138,21 @@ mouseHover.pushData = function (e) {
 mouseHover.record = function () {
   mouseHover.setInitDate();
   window.onmouseover = mouseHover.pushData.bind(this);
-  window.onmouseout = mouseHover.pushData.bind(this);
 };
 
 mouseHover.stop = function () {
   window.onmouseover = null;
-  window.onmouseout = null;
 };
 
 mouseHover.play = function () {
-  for(var i = 0; i < mouseHover.data.length; i++) {
+  for(var i = 0; i < mouseHover.data.length - 1; i++) {
     (function(index, mouseHover, eventSim) {
       setTimeout(function() {
-        eventSim.mouseover(mouseHover.data[index].posX, mouseHover.data[index].posY, mouseHover.data[index].type);
+        eventSim.mouseover(mouseHover.data[index].posX, mouseHover.data[index].posY, 'mouseover');
       }, mouseHover.data[index].time);
+      setTimeout(function () {
+        eventSim.mouseover(mouseHover.data[index].posX, mouseHover.data[index].posY, 'mouseout');
+      }, mouseHover.data[index + 1].time - 200);
     })(i, mouseHover, eventSim);
   }
 };
@@ -222,7 +223,7 @@ mouseMove.play = function () {
 module.exports = mouseMove;
 },{}],"/Users/mateusz/Desktop/reproduce/src/scrollMove.js":[function(require,module,exports){
 /*global require, window, console, module, document, setTimeout */
-
+'use strict';
 var scrollMove = {};
 
 scrollMove.data = [];

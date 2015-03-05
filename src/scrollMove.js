@@ -1,5 +1,5 @@
 /*global require, window, console, module, document, setTimeout */
-
+'use strict';
 var scrollMove = {};
 
 scrollMove.data = [];

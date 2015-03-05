@@ -1,9 +1,9 @@
-/*global require, window, console, module, document, setTimeout, $ */
-
+/*global window, console, module, document, setTimeout, $ */
+'use strict';
 var eventSim = {};
 
 eventSim.click = function (x,y){
-  var ev = document.createEvent("MouseEvent"),
+  var ev = document.createEvent('MouseEvent'),
       el = document.elementFromPoint(x + 20,y);
   
   /*
@@ -33,9 +33,8 @@ eventSim.click = function (x,y){
 };
 
 eventSim.mouseover = function (x,y,type) {
-  var ev = document.createEvent("MouseEvent"),
-      el = document.elementFromPoint(x - 20,y);
-  $(el).trigger(type.toString());
+  var el = document.elementFromPoint(x - 20,y);
+  $(el).trigger(type);
 };
 
 module.exports = eventSim;
