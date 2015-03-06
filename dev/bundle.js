@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/mateusz/Desktop/reproduce/src/eventSimulation.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/mateusz/Desktop/reproduce/src/events/eventSimulation.js":[function(require,module,exports){
 /*global window, console, module, document, setTimeout, $ */
 'use strict';
 var eventSim = {};
@@ -38,42 +38,7 @@ eventSim.mouseover = function (x,y,type) {
 };
 
 module.exports = eventSim;
-},{}],"/Users/mateusz/Desktop/reproduce/src/main.js":[function(require,module,exports){
-'use strict';
-var mouseMove = require('./mouseMove'),
-    mouseClick = require('./mouseClick'),
-    scrollMove = require('./scrollMove'),
-    mouseHover = require('./mouseHover'),
-    orginalTitle = document.title;
-window.record = function record () {
-  console.info('recording...');
-  mouseClick.record();
-  mouseMove.record();
-  scrollMove.record();
-  mouseHover.record();
-  document.title = 'recording...';
-};
-
-window.stop = function stop () {
-  console.info('stop!');
-  mouseClick.stop();
-  mouseMove.stop();
-  scrollMove.stop();
-  mouseHover.stop();
-  document.title = orginalTitle;
-  
-};
-
-window.play = function play () {
-  mouseClick.play();
-  mouseMove.play(orginalTitle);
-  scrollMove.play();
-  mouseHover.play();
-  document.title = 'playing...';
-};
-
-
-},{"./mouseClick":"/Users/mateusz/Desktop/reproduce/src/mouseClick.js","./mouseHover":"/Users/mateusz/Desktop/reproduce/src/mouseHover.js","./mouseMove":"/Users/mateusz/Desktop/reproduce/src/mouseMove.js","./scrollMove":"/Users/mateusz/Desktop/reproduce/src/scrollMove.js"}],"/Users/mateusz/Desktop/reproduce/src/mouseClick.js":[function(require,module,exports){
+},{}],"/Users/mateusz/Desktop/reproduce/src/events/mouseClick.js":[function(require,module,exports){
 /*global require, window, console, module, document, setTimeout */
 var mouseClick = {},
     eventSim = require('./eventSimulation');
@@ -115,7 +80,7 @@ mouseClick.play = function () {
 };
 
 module.exports = mouseClick;
-},{"./eventSimulation":"/Users/mateusz/Desktop/reproduce/src/eventSimulation.js"}],"/Users/mateusz/Desktop/reproduce/src/mouseHover.js":[function(require,module,exports){
+},{"./eventSimulation":"/Users/mateusz/Desktop/reproduce/src/events/eventSimulation.js"}],"/Users/mateusz/Desktop/reproduce/src/events/mouseHover.js":[function(require,module,exports){
 /*global require, window, console, module, setTimeout */
 'use strict';
 var mouseHover = {},
@@ -161,7 +126,7 @@ mouseHover.play = function () {
 };
 
 module.exports = mouseHover;
-},{"./eventSimulation":"/Users/mateusz/Desktop/reproduce/src/eventSimulation.js"}],"/Users/mateusz/Desktop/reproduce/src/mouseMove.js":[function(require,module,exports){
+},{"./eventSimulation":"/Users/mateusz/Desktop/reproduce/src/events/eventSimulation.js"}],"/Users/mateusz/Desktop/reproduce/src/events/mouseMove.js":[function(require,module,exports){
 /*global, window, console, module, document, setTimeout */
 'use strict';
 var mouseMove = {};
@@ -225,7 +190,7 @@ mouseMove.play = function (orginalTitle) {
 };
 
 module.exports = mouseMove;
-},{}],"/Users/mateusz/Desktop/reproduce/src/scrollMove.js":[function(require,module,exports){
+},{}],"/Users/mateusz/Desktop/reproduce/src/events/scrollMove.js":[function(require,module,exports){
 /*global require, window, console, module, document, setTimeout */
 'use strict';
 var scrollMove = {};
@@ -268,4 +233,40 @@ scrollMove.play = function () {
 };
 
 module.exports = scrollMove;
-},{}]},{},["/Users/mateusz/Desktop/reproduce/src/main.js"]);
+},{}],"/Users/mateusz/Desktop/reproduce/src/main.js":[function(require,module,exports){
+'use strict';
+var mouseMove = require('./events/mouseMove'),
+    mouseClick = require('./events/mouseClick'),
+    scrollMove = require('./events/scrollMove'),
+    mouseHover = require('./events/mouseHover'),
+    orginalTitle = document.title;
+
+window.record = function record () {
+  console.info('recording...');
+  mouseClick.record();
+  mouseMove.record();
+  scrollMove.record();
+  mouseHover.record();
+  document.title = 'recording...';
+};
+
+window.stop = function stop () {
+  console.info('stop!');
+  mouseClick.stop();
+  mouseMove.stop();
+  scrollMove.stop();
+  mouseHover.stop();
+  document.title = orginalTitle;
+  
+};
+
+window.play = function play () {
+  mouseClick.play();
+  mouseMove.play(orginalTitle);
+  scrollMove.play();
+  mouseHover.play();
+  document.title = 'playing...';
+};
+
+
+},{"./events/mouseClick":"/Users/mateusz/Desktop/reproduce/src/events/mouseClick.js","./events/mouseHover":"/Users/mateusz/Desktop/reproduce/src/events/mouseHover.js","./events/mouseMove":"/Users/mateusz/Desktop/reproduce/src/events/mouseMove.js","./events/scrollMove":"/Users/mateusz/Desktop/reproduce/src/events/scrollMove.js"}]},{},["/Users/mateusz/Desktop/reproduce/src/main.js"]);

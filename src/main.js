@@ -1,9 +1,10 @@
 'use strict';
-var mouseMove = require('./mouseMove'),
-    mouseClick = require('./mouseClick'),
-    scrollMove = require('./scrollMove'),
-    mouseHover = require('./mouseHover'),
+var mouseMove = require('./events/mouseMove'),
+    mouseClick = require('./events/mouseClick'),
+    scrollMove = require('./events/scrollMove'),
+    mouseHover = require('./events/mouseHover'),
     orginalTitle = document.title;
+
 window.record = function record () {
   console.info('recording...');
   mouseClick.record();
