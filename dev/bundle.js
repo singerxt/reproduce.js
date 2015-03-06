@@ -11,12 +11,10 @@ eventSim.click = function (x,y){
    *
    */
 
-  el.style.border = '2px solid #ff00ff';
   el.style.opacity = '0.5';
 
   setTimeout(function () {
     el.style.opacity = '1.0';
-    el.style.border = '';
   },200);
 
 
@@ -31,6 +29,7 @@ eventSim.click = function (x,y){
     null
   );
   el.dispatchEvent(ev);
+  el.focus();
 };
 
 eventSim.mouseover = function (x,y,type) {
@@ -44,14 +43,15 @@ module.exports = eventSim;
 var mouseMove = require('./mouseMove'),
     mouseClick = require('./mouseClick'),
     scrollMove = require('./scrollMove'),
-    mouseHover = require('./mouseHover');
-
+    mouseHover = require('./mouseHover'),
+    orginalTitle = document.title;
 window.record = function record () {
   console.info('recording...');
   mouseClick.record();
   mouseMove.record();
   scrollMove.record();
   mouseHover.record();
+  document.title = 'recording...';
 };
 
 window.stop = function stop () {
@@ -60,13 +60,16 @@ window.stop = function stop () {
   mouseMove.stop();
   scrollMove.stop();
   mouseHover.stop();
+  document.title = orginalTitle;
+  
 };
 
 window.play = function play () {
   mouseClick.play();
-  mouseMove.play();
+  mouseMove.play(orginalTitle);
   scrollMove.play();
   mouseHover.play();
+  document.title = 'playing...';
 };
 
 
@@ -152,15 +155,15 @@ mouseHover.play = function () {
       }, mouseHover.data[index].time);
       setTimeout(function () {
         eventSim.mouseover(mouseHover.data[index].posX, mouseHover.data[index].posY, 'mouseout');
-      }, mouseHover.data[index + 1].time - 200);
+      }, mouseHover.data[index + 1].time - 1);
     })(i, mouseHover, eventSim);
   }
 };
 
 module.exports = mouseHover;
 },{"./eventSimulation":"/Users/mateusz/Desktop/reproduce/src/eventSimulation.js"}],"/Users/mateusz/Desktop/reproduce/src/mouseMove.js":[function(require,module,exports){
-/*global require, window, console, module, document, setTimeout */
-
+/*global, window, console, module, document, setTimeout */
+'use strict';
 var mouseMove = {};
 
 mouseMove.data = [];
@@ -191,7 +194,7 @@ mouseMove.stop = function () {
   window.onmousemove = null;
 };
 
-mouseMove.play = function () {
+mouseMove.play = function (orginalTitle) {
   var fakeMouse = document.createElement('div');
   fakeMouse.style.backgroundColor = '#00ff00';
   fakeMouse.style.position = 'fixed';
@@ -206,7 +209,7 @@ mouseMove.play = function () {
 
   console.info('record starting');
   for(var i = 0; i < mouseMove.data.length; i++) {
-    (function(index, fakeMouse, mouseMove) {
+    (function(index, fakeMouse, mouseMove, orginalTitle) {
       setTimeout(function() {
         fakeMouse.style.top = mouseMove.data[index].posY.toString() + 'px';
         fakeMouse.style.top = mouseMove.data[index].posY + 'px';
@@ -214,9 +217,10 @@ mouseMove.play = function () {
         if(index === mouseMove.data.length - 1) {
           fakeMouse.parentNode.removeChild(fakeMouse);
           console.info('record completed');
+          document.title = orginalTitle;
         }
       }, mouseMove.data[index].time);
-    })(i, fakeMouse, mouseMove);
+    })(i, fakeMouse, mouseMove, orginalTitle);
   }
 };
 

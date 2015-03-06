@@ -10,12 +10,10 @@ eventSim.click = function (x,y){
    *
    */
 
-  el.style.border = '2px solid #ff00ff';
   el.style.opacity = '0.5';
 
   setTimeout(function () {
     el.style.opacity = '1.0';
-    el.style.border = '';
   },200);
 
 
@@ -30,6 +28,7 @@ eventSim.click = function (x,y){
     null
   );
   el.dispatchEvent(ev);
+  el.focus();
 };
 
 eventSim.mouseover = function (x,y,type) {

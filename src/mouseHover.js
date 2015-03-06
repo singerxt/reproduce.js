@@ -37,7 +37,7 @@ mouseHover.play = function () {
       }, mouseHover.data[index].time);
       setTimeout(function () {
         eventSim.mouseover(mouseHover.data[index].posX, mouseHover.data[index].posY, 'mouseout');
-      }, mouseHover.data[index + 1].time - 200);
+      }, mouseHover.data[index + 1].time - 1);
     })(i, mouseHover, eventSim);
   }
 };

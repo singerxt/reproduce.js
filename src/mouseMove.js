@@ -1,5 +1,5 @@
-/*global require, window, console, module, document, setTimeout */
-
+/*global, window, console, module, document, setTimeout */
+'use strict';
 var mouseMove = {};
 
 mouseMove.data = [];
@@ -30,7 +30,7 @@ mouseMove.stop = function () {
   window.onmousemove = null;
 };
 
-mouseMove.play = function () {
+mouseMove.play = function (orginalTitle) {
   var fakeMouse = document.createElement('div');
   fakeMouse.style.backgroundColor = '#00ff00';
   fakeMouse.style.position = 'fixed';
@@ -45,7 +45,7 @@ mouseMove.play = function () {
 
   console.info('record starting');
   for(var i = 0; i < mouseMove.data.length; i++) {
-    (function(index, fakeMouse, mouseMove) {
+    (function(index, fakeMouse, mouseMove, orginalTitle) {
       setTimeout(function() {
         fakeMouse.style.top = mouseMove.data[index].posY.toString() + 'px';
         fakeMouse.style.top = mouseMove.data[index].posY + 'px';
@@ -53,9 +53,10 @@ mouseMove.play = function () {
         if(index === mouseMove.data.length - 1) {
           fakeMouse.parentNode.removeChild(fakeMouse);
           console.info('record completed');
+          document.title = orginalTitle;
         }
       }, mouseMove.data[index].time);
-    })(i, fakeMouse, mouseMove);
+    })(i, fakeMouse, mouseMove, orginalTitle);
   }
 };
 
