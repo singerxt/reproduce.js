@@ -13,7 +13,6 @@ mouseHover.pushData = function (e) {
   var timeStamp = e.timeStamp - this.getInitDate;
   mouseHover.data.push({
     type: e.type,
-    target: e.target,
     time: timeStamp,
     posY: e.y,
     posX: e.x

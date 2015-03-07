@@ -12,7 +12,6 @@ mouseClick.pushData = function (e) {
   var timeStamp = e.timeStamp - this.getInitDate;
 
   mouseClick.data.push({
-    target: e.target,
     time: timeStamp,
     posY: e.y,
     posX: e.x

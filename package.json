@@ -1,14 +1,14 @@
 {
-  "name": "browserify-starter-kit",
+  "name": "reproduce.js",
   "version": "1.0.0",
-  "description": "",
+  "description": "Record your bug!",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zzarcon/browserify-starter-kit.git"
+    "url": ""
   },
   "keywords": [
     "browserify",
@@ -23,15 +23,16 @@
   "author": "zzarcon",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zzarcon/browserify-starter-kit/issues"
+    "url": ""
   },
-  "homepage": "https://github.com/zzarcon/browserify-starter-kit",
+  "homepage": "",
   "devDependencies": {
     "karma": "^0.12.31",
     "karma-browserify": "^3.0.3",
     "karma-mocha": "^0.1.10",
     "karma-phantomjs-launcher": "^0.1.4",
     "mocha": "^2.1.0",
-    "watchify": "^2.4.0"
+    "watchify": "^2.4.0",
+    "circular-json": "0.1.6"
   }
 }
