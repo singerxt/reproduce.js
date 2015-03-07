@@ -484,7 +484,6 @@ window.stop = function stop () {
   mouseHover.stop();
   resize.stop();
   document.title = orginalTitle;
-  
 };
 
 window.play = function play () {
@@ -497,20 +496,21 @@ window.play = function play () {
 };
 
 window.getData = function () {
-  var data = {
+  var helper,
+  data = {
     mouseClick: mouseClick.data,
     mouseMove: mouseMove.data,
     scrollMove: scrollMove.data,
     mouseHover: mouseHover.data,
     resize: resize.data
   };
-  
-  return CircularJSON.stringify(data);
+  helper = CircularJSON.stringify(data);
+  helper = helper.replace(/\"/g, '\"');
+  return CircularJSON.stringify(helper);
 };
 
 window.setData = function (data) {
   data = CircularJSON.parse(data);
-  console.log(data);
   mouseClick.data = data.mouseClick;
   mouseMove.data = data.mouseMove;
   scrollMove.data  = data.scrollMove;
