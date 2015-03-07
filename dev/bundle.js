@@ -186,7 +186,7 @@ var eventSim = {};
 
 eventSim.click = function (x,y){
   var ev = document.createEvent('MouseEvent'),
-      el = document.elementFromPoint(x + 20,y);
+      el = document.elementFromPoint(x - 5,y);
   
   /*
    *
@@ -214,7 +214,13 @@ eventSim.click = function (x,y){
 };
 
 eventSim.mouseover = function (x,y,type) {
-  var el = document.elementFromPoint(x - 20,y);
+  var el = document.elementFromPoint(x - 5,y);
+  if(el.className.indexOf('reproduce-hover') === -1) {
+    el.className += ' reproduce-hover';
+  } else {
+    el.className += el.className.replace('reproduce-hover', '');
+  }
+
   $(el).trigger(type);
 };
 
@@ -344,8 +350,8 @@ mouseMove.play = function (orginalTitle) {
   fakeMouse.style.position = 'fixed';
   fakeMouse.style.top = 0;
   fakeMouse.style.left = 0;
-  fakeMouse.style.height = '10px';
-  fakeMouse.style.width = '10px';
+  fakeMouse.style.height = '4px';
+  fakeMouse.style.width = '4px';
   fakeMouse.style.zIndex = '99999999999';
   fakeMouse.class = 'fake-mouse';
 
@@ -463,6 +469,7 @@ var mouseMove = require('./events/mouseMove'),
     scrollMove = require('./events/scrollMove'),
     mouseHover = require('./events/mouseHover'),
     resize = require('./events/resize'),
+    styles = require('./utils/styles'),
     CircularJSON = require('circular-json'),
     orginalTitle = document.title;
 
@@ -487,6 +494,7 @@ window.stop = function stop () {
 };
 
 window.play = function play () {
+  styles.appendReproduceStyles();
   mouseClick.play();
   mouseMove.play(orginalTitle);
   scrollMove.play();
@@ -504,6 +512,7 @@ window.getData = function () {
     mouseHover: mouseHover.data,
     resize: resize.data
   };
+
   helper = CircularJSON.stringify(data);
   helper = helper.replace(/\"/g, '\"');
   return CircularJSON.stringify(helper);
@@ -519,4 +528,30 @@ window.setData = function (data) {
 };
 
 
-},{"./events/mouseClick":"/Users/mateusz/Desktop/reproduce/src/events/mouseClick.js","./events/mouseHover":"/Users/mateusz/Desktop/reproduce/src/events/mouseHover.js","./events/mouseMove":"/Users/mateusz/Desktop/reproduce/src/events/mouseMove.js","./events/resize":"/Users/mateusz/Desktop/reproduce/src/events/resize.js","./events/scrollMove":"/Users/mateusz/Desktop/reproduce/src/events/scrollMove.js","circular-json":"/Users/mateusz/Desktop/reproduce/node_modules/circular-json/build/circular-json.node.js"}]},{},["/Users/mateusz/Desktop/reproduce/src/main.js"]);
+},{"./events/mouseClick":"/Users/mateusz/Desktop/reproduce/src/events/mouseClick.js","./events/mouseHover":"/Users/mateusz/Desktop/reproduce/src/events/mouseHover.js","./events/mouseMove":"/Users/mateusz/Desktop/reproduce/src/events/mouseMove.js","./events/resize":"/Users/mateusz/Desktop/reproduce/src/events/resize.js","./events/scrollMove":"/Users/mateusz/Desktop/reproduce/src/events/scrollMove.js","./utils/styles":"/Users/mateusz/Desktop/reproduce/src/utils/styles.js","circular-json":"/Users/mateusz/Desktop/reproduce/node_modules/circular-json/build/circular-json.node.js"}],"/Users/mateusz/Desktop/reproduce/src/utils/styles.js":[function(require,module,exports){
+'use strict';
+
+var styles = {};
+
+styles.appendReproduceStyles = function () {
+  var replace,
+      stylesString = '',
+      styleSheet = document.createElement('style');
+      styleSheet.type = 'text/css';
+
+  for (var i = 0; i <= document.styleSheets.length - 1; i++) {
+    for(var j = 0; j <= document.styleSheets[i].rules.length - 1; j ++) {
+      replace = document.styleSheets[i].rules[j].cssText;
+      if(replace.indexOf(':hover') !== -1) {
+        replace = replace.replace(':hover', '.reproduce-hover');
+        stylesString += replace;
+      }
+    }
+  }
+
+  styleSheet.appendChild(document.createTextNode(stylesString));
+  document.body.appendChild(styleSheet);
+};
+
+module.exports = styles;
+},{}]},{},["/Users/mateusz/Desktop/reproduce/src/main.js"]);

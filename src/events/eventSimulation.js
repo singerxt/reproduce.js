@@ -4,7 +4,7 @@ var eventSim = {};
 
 eventSim.click = function (x,y){
   var ev = document.createEvent('MouseEvent'),
-      el = document.elementFromPoint(x + 20,y);
+      el = document.elementFromPoint(x - 5,y);
   
   /*
    *
@@ -32,7 +32,13 @@ eventSim.click = function (x,y){
 };
 
 eventSim.mouseover = function (x,y,type) {
-  var el = document.elementFromPoint(x - 20,y);
+  var el = document.elementFromPoint(x - 5,y);
+  if(el.className.indexOf('reproduce-hover') === -1) {
+    el.className += ' reproduce-hover';
+  } else {
+    el.className += el.className.replace('reproduce-hover', '');
+  }
+
   $(el).trigger(type);
 };
 

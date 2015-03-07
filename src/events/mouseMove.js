@@ -36,8 +36,8 @@ mouseMove.play = function (orginalTitle) {
   fakeMouse.style.position = 'fixed';
   fakeMouse.style.top = 0;
   fakeMouse.style.left = 0;
-  fakeMouse.style.height = '10px';
-  fakeMouse.style.width = '10px';
+  fakeMouse.style.height = '4px';
+  fakeMouse.style.width = '4px';
   fakeMouse.style.zIndex = '99999999999';
   fakeMouse.class = 'fake-mouse';
 

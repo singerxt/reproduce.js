@@ -5,6 +5,7 @@ var mouseMove = require('./events/mouseMove'),
     scrollMove = require('./events/scrollMove'),
     mouseHover = require('./events/mouseHover'),
     resize = require('./events/resize'),
+    styles = require('./utils/styles'),
     CircularJSON = require('circular-json'),
     orginalTitle = document.title;
 
@@ -29,6 +30,7 @@ window.stop = function stop () {
 };
 
 window.play = function play () {
+  styles.appendReproduceStyles();
   mouseClick.play();
   mouseMove.play(orginalTitle);
   scrollMove.play();
@@ -46,6 +48,7 @@ window.getData = function () {
     mouseHover: mouseHover.data,
     resize: resize.data
   };
+
   helper = CircularJSON.stringify(data);
   helper = helper.replace(/\"/g, '\"');
   return CircularJSON.stringify(helper);
