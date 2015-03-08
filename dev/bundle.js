@@ -191,9 +191,7 @@ eventSim.click = function (x,y){
   /*
    *
    */
-
   el.style.opacity = '0.5';
-
   setTimeout(function () {
     el.style.opacity = '1.0';
   },200);
@@ -218,10 +216,10 @@ eventSim.mouseover = function (x,y,type) {
   if(el.className.indexOf('reproduce-hover') === -1) {
     el.className += ' reproduce-hover';
   } else {
-    el.className += el.className.replace('reproduce-hover', '');
+    el.className = el.className.replace('reproduce-hover', '');
   }
 
-  $(el).trigger(type);
+  jQuery(el).trigger(type);
 };
 
 module.exports = eventSim;
@@ -305,7 +303,7 @@ mouseHover.play = function () {
       }, mouseHover.data[index].time);
       setTimeout(function () {
         eventSim.mouseover(mouseHover.data[index].posX, mouseHover.data[index].posY, 'mouseout');
-      }, mouseHover.data[index + 1].time - 1);
+      }, mouseHover.data[index + 1].time - 10);
     })(i, mouseHover, eventSim);
   }
 };
@@ -473,6 +471,10 @@ var mouseMove = require('./events/mouseMove'),
     CircularJSON = require('circular-json'),
     orginalTitle = document.title;
 
+window.onload = function () {
+  styles.appendReproduceStyles();
+};
+
 window.record = function record () {
   console.info('recording...');
   mouseClick.record();
@@ -494,7 +496,6 @@ window.stop = function stop () {
 };
 
 window.play = function play () {
-  styles.appendReproduceStyles();
   mouseClick.play();
   mouseMove.play(orginalTitle);
   scrollMove.play();

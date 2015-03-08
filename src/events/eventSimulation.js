@@ -9,9 +9,7 @@ eventSim.click = function (x,y){
   /*
    *
    */
-
   el.style.opacity = '0.5';
-
   setTimeout(function () {
     el.style.opacity = '1.0';
   },200);
@@ -36,10 +34,10 @@ eventSim.mouseover = function (x,y,type) {
   if(el.className.indexOf('reproduce-hover') === -1) {
     el.className += ' reproduce-hover';
   } else {
-    el.className += el.className.replace('reproduce-hover', '');
+    el.className = el.className.replace('reproduce-hover', '');
   }
 
-  $(el).trigger(type);
+  jQuery(el).trigger(type);
 };
 
 module.exports = eventSim;

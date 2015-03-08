@@ -9,6 +9,10 @@ var mouseMove = require('./events/mouseMove'),
     CircularJSON = require('circular-json'),
     orginalTitle = document.title;
 
+window.onload = function () {
+  styles.appendReproduceStyles();
+};
+
 window.record = function record () {
   console.info('recording...');
   mouseClick.record();
@@ -30,7 +34,6 @@ window.stop = function stop () {
 };
 
 window.play = function play () {
-  styles.appendReproduceStyles();
   mouseClick.play();
   mouseMove.play(orginalTitle);
   scrollMove.play();
