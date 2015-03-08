@@ -20,7 +20,7 @@ setData(data) // set data
 For now supported is only Google Chrome because in near future this script will be rewrited to Chrome Extension.
 
 
-# Development
+## Development
 
 ```
 git clone https://github.com/singerxt/reproduce.js.git && cd reproduce
