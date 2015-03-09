@@ -1,6 +1,7 @@
 /*global window, console, module, document, setTimeout, $ */
 'use strict';
-var eventSim = {};
+var eventSim = {},
+    $ = require('jQuery');
 
 eventSim.click = function (x,y){
   var ev = document.createEvent('MouseEvent'),
@@ -43,7 +44,7 @@ eventSim.mouseover = function (x,y,type) {
     el.className = el.className.replace('reproduce-hover', '');
   }
 
-  jQuery(el).trigger(type);
+  $(el).trigger(type);
 };
 
 module.exports = eventSim;
