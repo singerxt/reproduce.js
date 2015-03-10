@@ -12,7 +12,8 @@ resize.pushData = function (e) {
   var timeStamp = e.timeStamp - this.getInitDate;
   this.data.push({
     width: window.innerWidth,
-    time: timeStamp
+    time: timeStamp,
+    type: e.type
   });
 };
 
@@ -27,16 +28,6 @@ resize.record = function () {
 
 resize.stop = function () {
   document.onscroll = null;
-};
-
-resize.play = function () {
-  for(var i = 0; i < resize.data.length; i++) {
-    (function(index, resize) {
-      setTimeout(function() {
-        document.body.style.width = resize.data[index].width  + 'px';
-      }, resize.data[index].time);
-    })(i, resize);
-  }
 };
 
 module.exports = resize;

@@ -32,9 +32,9 @@ eventSim.click = function (x,y){
 };
 
 eventSim.mouseover = function (x,y,type) {
-  var el = document.elementFromPoint(x - 5,y);
-  
-  if(el === undefined || typeof el.className.indexOf !== 'function') {
+  var el = document.elementFromPoint(x,y);
+  console.log(el);
+  if(el === null) {
     return false;
   }
 

@@ -9421,9 +9421,9 @@ eventSim.click = function (x,y){
 };
 
 eventSim.mouseover = function (x,y,type) {
-  var el = document.elementFromPoint(x - 5,y);
-  
-  if(el === undefined || typeof el.className.indexOf !== 'function') {
+  var el = document.elementFromPoint(x,y);
+  console.log(el);
+  if(el === null) {
     return false;
   }
 
@@ -9439,6 +9439,8 @@ eventSim.mouseover = function (x,y,type) {
 module.exports = eventSim;
 },{"jQuery":"/Users/mateusz/Desktop/reproduce/node_modules/jQuery/dist/jquery.js"}],"/Users/mateusz/Desktop/reproduce/src/events/mouseClick.js":[function(require,module,exports){
 /*global require, window, console, module, document, setTimeout */
+'use strict';
+
 var mouseClick = {},
     eventSim = require('./eventSimulation');
 
@@ -9454,7 +9456,8 @@ mouseClick.pushData = function (e) {
   mouseClick.data.push({
     time: timeStamp,
     posY: e.y,
-    posX: e.x
+    posX: e.x,
+    type: e.type
   });
 };
 
@@ -9467,22 +9470,11 @@ mouseClick.stop = function () {
   window.onclick = null;
 };
 
-mouseClick.play = function () {
-  for(var i = 0; i < mouseClick.data.length; i++) {
-    (function(index, mouseClick, eventSim) {
-      setTimeout(function() {
-        eventSim.click(mouseClick.data[index].posX, mouseClick.data[index].posY);
-      }, mouseClick.data[index].time);
-    })(i, mouseClick, eventSim);
-  }
-};
-
 module.exports = mouseClick;
 },{"./eventSimulation":"/Users/mateusz/Desktop/reproduce/src/events/eventSimulation.js"}],"/Users/mateusz/Desktop/reproduce/src/events/mouseHover.js":[function(require,module,exports){
 /*global require, window, console, module, setTimeout */
 'use strict';
-var mouseHover = {},
-    eventSim = require('./eventSimulation');
+var mouseHover = {};
 
 mouseHover.setInitDate = function () {
   this.getInitDate = Date.now();
@@ -9492,6 +9484,10 @@ mouseHover.data = [];
 
 mouseHover.pushData = function (e) {
   var timeStamp = e.timeStamp - this.getInitDate;
+  if(e.type === 'mouseout') {
+    console.log('mouseout');
+  }
+
   mouseHover.data.push({
     type: e.type,
     time: timeStamp,
@@ -9503,27 +9499,15 @@ mouseHover.pushData = function (e) {
 mouseHover.record = function () {
   mouseHover.setInitDate();
   window.onmouseover = mouseHover.pushData.bind(this);
+  window.onmouseout = mouseHover.pushData.bind(this);
 };
 
 mouseHover.stop = function () {
   window.onmouseover = null;
 };
 
-mouseHover.play = function () {
-  for(var i = 0; i < mouseHover.data.length - 1; i++) {
-    (function(index, mouseHover, eventSim) {
-      setTimeout(function() {
-        eventSim.mouseover(mouseHover.data[index].posX, mouseHover.data[index].posY, 'mouseover');
-      }, mouseHover.data[index].time);
-      setTimeout(function () {
-        eventSim.mouseover(mouseHover.data[index].posX, mouseHover.data[index].posY, 'mouseout');
-      }, mouseHover.data[index + 1].time - 10);
-    })(i, mouseHover, eventSim);
-  }
-};
-
 module.exports = mouseHover;
-},{"./eventSimulation":"/Users/mateusz/Desktop/reproduce/src/events/eventSimulation.js"}],"/Users/mateusz/Desktop/reproduce/src/events/mouseMove.js":[function(require,module,exports){
+},{}],"/Users/mateusz/Desktop/reproduce/src/events/mouseMove.js":[function(require,module,exports){
 /*global, window, console, module, document, setTimeout */
 'use strict';
 var mouseMove = {};
@@ -9539,7 +9523,8 @@ mouseMove.pushData = function (e) {
   this.data.push({
     posY: e.y,
     posX: e.x,
-    time: timeStamp
+    time: timeStamp,
+    type: e.type
   });
 };
 
@@ -9554,36 +9539,6 @@ mouseMove.record = function () {
 
 mouseMove.stop = function () {
   window.onmousemove = null;
-};
-
-mouseMove.play = function (orginalTitle) {
-  var fakeMouse = document.createElement('div');
-  fakeMouse.style.backgroundColor = '#00ff00';
-  fakeMouse.style.position = 'fixed';
-  fakeMouse.style.top = 0;
-  fakeMouse.style.left = 0;
-  fakeMouse.style.height = '4px';
-  fakeMouse.style.width = '4px';
-  fakeMouse.style.zIndex = '99999999999';
-  fakeMouse.class = 'fake-mouse';
-
-  document.body.appendChild(fakeMouse);
-
-  console.info('record starting');
-  for(var i = 0; i < mouseMove.data.length; i++) {
-    (function(index, fakeMouse, mouseMove, orginalTitle) {
-      setTimeout(function() {
-        fakeMouse.style.top = mouseMove.data[index].posY.toString() + 'px';
-        fakeMouse.style.top = mouseMove.data[index].posY + 'px';
-        fakeMouse.style.left = mouseMove.data[index].posX + 'px';
-        if(index === mouseMove.data.length - 1) {
-          fakeMouse.parentNode.removeChild(fakeMouse);
-          console.info('record completed');
-          document.title = orginalTitle;
-        }
-      }, mouseMove.data[index].time);
-    })(i, fakeMouse, mouseMove, orginalTitle);
-  }
 };
 
 module.exports = mouseMove;
@@ -9602,7 +9557,8 @@ resize.pushData = function (e) {
   var timeStamp = e.timeStamp - this.getInitDate;
   this.data.push({
     width: window.innerWidth,
-    time: timeStamp
+    time: timeStamp,
+    type: e.type
   });
 };
 
@@ -9617,16 +9573,6 @@ resize.record = function () {
 
 resize.stop = function () {
   document.onscroll = null;
-};
-
-resize.play = function () {
-  for(var i = 0; i < resize.data.length; i++) {
-    (function(index, resize) {
-      setTimeout(function() {
-        document.body.style.width = resize.data[index].width  + 'px';
-      }, resize.data[index].time);
-    })(i, resize);
-  }
 };
 
 module.exports = resize;
@@ -9645,7 +9591,8 @@ scrollMove.pushData = function (e) {
   var timeStamp = e.timeStamp - this.getInitDate;
   this.data.push({
     positionY: window.scrollY,
-    time: timeStamp
+    time: timeStamp,
+    type: e.type
   });
 };
 
@@ -9662,16 +9609,6 @@ scrollMove.stop = function () {
   document.onscroll = null;
 };
 
-scrollMove.play = function () {
-  for(var i = 0; i < scrollMove.data.length; i++) {
-    (function(index, scrollMove) {
-      setTimeout(function() {
-        window.scroll(0, scrollMove.data[index].positionY);
-      }, scrollMove.data[index].time);
-    })(i, scrollMove);
-  }
-};
-
 module.exports = scrollMove;
 },{}],"/Users/mateusz/Desktop/reproduce/src/main.js":[function(require,module,exports){
 'use strict';
@@ -9682,6 +9619,7 @@ var mouseMove = require('./events/mouseMove'),
     mouseHover = require('./events/mouseHover'),
     resize = require('./events/resize'),
     styles = require('./utils/styles'),
+    play = require('./utils/play'),
     CircularJSON = require('circular-json'),
     orginalTitle = document.title;
 
@@ -9689,7 +9627,7 @@ window.onload = function () {
   styles.appendReproduceStyles();
 };
 
-window.record = function record () {
+window.record = function () {
   console.info('recording...');
   mouseClick.record();
   mouseMove.record();
@@ -9699,7 +9637,7 @@ window.record = function record () {
   document.title = 'recording...';
 };
 
-window.stop = function stop () {
+window.stop = function () {
   console.info('stop!');
   mouseClick.stop();
   mouseMove.stop();
@@ -9709,41 +9647,87 @@ window.stop = function stop () {
   document.title = orginalTitle;
 };
 
-window.play = function play () {
-  mouseClick.play();
-  mouseMove.play(orginalTitle);
-  scrollMove.play();
-  mouseHover.play();
-  resize.play();
-  document.title = 'playing...';
+window.play = function () {
+  var data = getData();
+  play.start(data);
 };
 
 window.getData = function () {
-  var helper,
-  data = {
-    mouseClick: mouseClick.data,
-    mouseMove: mouseMove.data,
-    scrollMove: scrollMove.data,
-    mouseHover: mouseHover.data,
-    resize: resize.data
-  };
+  var data = [],
+      compare = function (a,b) {
+        if(a.time < b.time) {return -1;}
+        if(a.time > b.time) {return 1;}
+        return 0;
+      };
 
-  helper = CircularJSON.stringify(data);
-  helper = helper.replace(/\"/g, '\"');
-  return CircularJSON.stringify(helper);
+  data = data.concat(mouseClick.data, mouseMove.data, scrollMove.data, mouseHover.data, resize.data);
+  data = data.sort(compare);
+  return CircularJSON.stringify(data);
 };
 
 window.setData = function (data) {
   data = CircularJSON.parse(data);
-  mouseClick.data = data.mouseClick;
-  mouseMove.data = data.mouseMove;
-  scrollMove.data  = data.scrollMove;
-  mouseHover.data = data.mouseHover;
-  resize.data = data.resize;
+  return data;
 };
 
 
-},{"./events/mouseClick":"/Users/mateusz/Desktop/reproduce/src/events/mouseClick.js","./events/mouseHover":"/Users/mateusz/Desktop/reproduce/src/events/mouseHover.js","./events/mouseMove":"/Users/mateusz/Desktop/reproduce/src/events/mouseMove.js","./events/resize":"/Users/mateusz/Desktop/reproduce/src/events/resize.js","./events/scrollMove":"/Users/mateusz/Desktop/reproduce/src/events/scrollMove.js","./utils/styles":"/Users/mateusz/Desktop/reproduce/src/utils/styles.js","circular-json":"/Users/mateusz/Desktop/reproduce/node_modules/circular-json/build/circular-json.node.js"}],"/Users/mateusz/Desktop/reproduce/src/utils/styles.js":[function(require,module,exports){
+},{"./events/mouseClick":"/Users/mateusz/Desktop/reproduce/src/events/mouseClick.js","./events/mouseHover":"/Users/mateusz/Desktop/reproduce/src/events/mouseHover.js","./events/mouseMove":"/Users/mateusz/Desktop/reproduce/src/events/mouseMove.js","./events/resize":"/Users/mateusz/Desktop/reproduce/src/events/resize.js","./events/scrollMove":"/Users/mateusz/Desktop/reproduce/src/events/scrollMove.js","./utils/play":"/Users/mateusz/Desktop/reproduce/src/utils/play.js","./utils/styles":"/Users/mateusz/Desktop/reproduce/src/utils/styles.js","circular-json":"/Users/mateusz/Desktop/reproduce/node_modules/circular-json/build/circular-json.node.js"}],"/Users/mateusz/Desktop/reproduce/src/utils/play.js":[function(require,module,exports){
+/*global require, window, console, module, document, setTimeout */
+'use strict';
+
+var play = {},
+    eventSim = require('../events/eventSimulation'),
+    CircularJSON = require('circular-json');
+
+play.start = function (data) {
+  var fakeMouse = document.createElement('div');
+  fakeMouse.style.backgroundColor = '#00ff00';
+  fakeMouse.style.position = 'fixed';
+  fakeMouse.style.top = 0;
+  fakeMouse.style.left = 0;
+  fakeMouse.style.height = '4px';
+  fakeMouse.style.width = '4px';
+  fakeMouse.style.zIndex = '99999999999';
+  fakeMouse.class = 'fake-mouse';
+
+  document.body.appendChild(fakeMouse);
+
+  if (data !== undefined) {
+    data = CircularJSON.parse(data);
+  } else {
+    console.warn('data not found!');
+    return false;
+  }
+
+  for(var i = 0; i < data.length; i++) {
+    (function(index, data) {
+      setTimeout(function() {
+        if (data[index].type === 'mousemove') {
+          fakeMouse.style.top = data[index].posY.toString() + 'px';
+          fakeMouse.style.top = data[index].posY + 'px';
+          fakeMouse.style.left = data[index].posX + 'px';
+        } else if (data[index].type === 'resize') {
+          document.body.style.width = data[index].width  + 'px';
+        } else if (data[index].type === 'click') {
+          eventSim.click(data[index].posX, data[index].posY);
+        } else if (data[index].type === 'scroll') {
+          window.scroll(0, data[index].positionY);
+        } else if (data[index].type === 'mouseover') {
+          eventSim.mouseover(data[index].posX, data[index].posY, 'mouseover');
+        } else if (data[index].type === 'mouseout') {
+          eventSim.mouseover(data[index].posX, data[index].posY, 'out');
+        }
+        
+        if(index === data.length - 1) {
+          console.log('completed..');
+        }
+      }, data[index].time);
+    })(i, data);
+  }
+};
+
+module.exports = play;
+},{"../events/eventSimulation":"/Users/mateusz/Desktop/reproduce/src/events/eventSimulation.js","circular-json":"/Users/mateusz/Desktop/reproduce/node_modules/circular-json/build/circular-json.node.js"}],"/Users/mateusz/Desktop/reproduce/src/utils/styles.js":[function(require,module,exports){
 'use strict';
 
 var styles = {};

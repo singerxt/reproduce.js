@@ -1,4 +1,6 @@
 /*global require, window, console, module, document, setTimeout */
+'use strict';
+
 var mouseClick = {},
     eventSim = require('./eventSimulation');
 
@@ -14,7 +16,8 @@ mouseClick.pushData = function (e) {
   mouseClick.data.push({
     time: timeStamp,
     posY: e.y,
-    posX: e.x
+    posX: e.x,
+    type: e.type
   });
 };
 
@@ -25,16 +28,6 @@ mouseClick.record = function () {
 
 mouseClick.stop = function () {
   window.onclick = null;
-};
-
-mouseClick.play = function () {
-  for(var i = 0; i < mouseClick.data.length; i++) {
-    (function(index, mouseClick, eventSim) {
-      setTimeout(function() {
-        eventSim.click(mouseClick.data[index].posX, mouseClick.data[index].posY);
-      }, mouseClick.data[index].time);
-    })(i, mouseClick, eventSim);
-  }
 };
 
 module.exports = mouseClick;
