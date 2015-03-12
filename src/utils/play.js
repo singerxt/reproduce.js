@@ -42,6 +42,7 @@ play.start = function (data) {
         
         if(index === data.length - 1) {
           console.log('completed..');
+          fakeMouse.parentNode.removeChild(fakeMouse);
         }
       }, data[index].time);
     })(i, data);

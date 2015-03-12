@@ -195,38 +195,27 @@ eventSim.click = function (x,y){
   setTimeout(function () {
     el.style.opacity = '1.0';
   },200);
-
-
-  ev.initMouseEvent(
-    'click',
-    true /* bubble */, 
-    true /* cancelable */,
-    window, null,
-    x, y, 0, 0, /* coordinates */
-    false, false, false, false, /* modifier keys */
-    0 /*left*/, 
-    null
-  );
+  ev.initMouseEvent('click', true, true, window, null, x, y, 0, 0, false, false, false, false, 0, null);
   el.dispatchEvent(ev);
-  el.focus();
 };
 
 eventSim.lastMouseOver = {};
 
 eventSim.mouseover = function (x,y,type) {
-  var el = document.elementFromPoint(x,y);
-  
+  var el = document.elementFromPoint(x,y),
+      ev = document.createEvent('MouseEvent');
   if(el === null) {
     return false;
   }
 
   if(type === 'mouseover') {
     el.className += ' reproduce-hover';
-    $(el).trigger('mouseover');
-
+    ev.initMouseEvent('mouseover', true, true, window, null, x, y, 0, 0, false, false, false, false, 0, null);
+    el.dispatchEvent(ev);
+    ev.initMouseEvent('mouseout', true, true, window, null, x, y, 0, 0, false, false, false, false, 0, null);
     el = document.elementFromPoint(this.lastMouseOver.xPos, this.lastMouseOver.yPos);
     el.className = el.className.replace('reproduce-hover', '');
-    $(el).trigger('mouseout');
+    el.dispatchEvent(ev);
     this.lastMouseOver = {
       xPos: x,
       yPos: y
@@ -507,6 +496,7 @@ play.start = function (data) {
         
         if(index === data.length - 1) {
           console.log('completed..');
+          fakeMouse.parentNode.removeChild(fakeMouse);
         }
       }, data[index].time);
     })(i, data);
