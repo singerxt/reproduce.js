@@ -1,8 +1,6 @@
-/*global require, window, console, module, document, setTimeout */
 'use strict';
 
-var mouseClick = {},
-    eventSim = require('./eventSimulation');
+var mouseClick = {};
 
 mouseClick.setInitDate = function () {
   this.getInitDate = Date.now();

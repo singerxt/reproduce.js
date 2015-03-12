@@ -1,4 +1,3 @@
-/*global require, window, console, module, document, setTimeout */
 'use strict';
 
 var play = {},
@@ -7,17 +6,17 @@ var play = {},
 
 play.start = function (data) {
   var fakeMouse = document.createElement('div');
-  fakeMouse.style.backgroundColor = '#00ff00';
+  fakeMouse.style.backgroundColor = '#ffdddd';
   fakeMouse.style.position = 'fixed';
   fakeMouse.style.top = 0;
   fakeMouse.style.left = 0;
-  fakeMouse.style.height = '4px';
-  fakeMouse.style.width = '4px';
+  fakeMouse.style.height = '8px';
+  fakeMouse.style.width = '8px';
   fakeMouse.style.zIndex = '99999999999';
   fakeMouse.class = 'fake-mouse';
 
   document.body.appendChild(fakeMouse);
-
+  
   if (data !== undefined) {
     data = CircularJSON.parse(data);
   } else {
@@ -39,8 +38,6 @@ play.start = function (data) {
           window.scroll(0, data[index].positionY);
         } else if (data[index].type === 'mouseover') {
           eventSim.mouseover(data[index].posX, data[index].posY, 'mouseover');
-        } else if (data[index].type === 'mouseout') {
-          eventSim.mouseover(data[index].posX, data[index].posY, 'mouseout');
         }
         
         if(index === data.length - 1) {

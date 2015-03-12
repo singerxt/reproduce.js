@@ -1,4 +1,3 @@
-/*global window, console, module, document, setTimeout, $ */
 'use strict';
 var eventSim = {};
 
@@ -30,6 +29,8 @@ eventSim.click = function (x,y){
   el.focus();
 };
 
+eventSim.lastMouseOver = {};
+
 eventSim.mouseover = function (x,y,type) {
   var el = document.elementFromPoint(x,y);
   
@@ -37,14 +38,18 @@ eventSim.mouseover = function (x,y,type) {
     return false;
   }
 
-  if(el.className.indexOf('reproduce-hover') === -1 && type === 'mouseover') {
+  if(type === 'mouseover') {
     el.className += ' reproduce-hover';
-  } else {
-    el.className = el.className.replace('reproduce-hover', '');
-    console.log('czemu nie');
-  }
+    $(el).trigger('mouseover');
 
-  $(el).trigger(type);
+    el = document.elementFromPoint(this.lastMouseOver.xPos, this.lastMouseOver.yPos);
+    el.className = el.className.replace('reproduce-hover', '');
+    $(el).trigger('mouseout');
+    this.lastMouseOver = {
+      xPos: x,
+      yPos: y
+    };
+  }
 };
 
 module.exports = eventSim;

@@ -180,7 +180,6 @@ function parseRecursion(text, reviver) {
 this.stringify = stringifyRecursion;
 this.parse = parseRecursion;
 },{}],"/Users/mateusz/Desktop/reproduce/src/events/eventSimulation.js":[function(require,module,exports){
-/*global window, console, module, document, setTimeout, $ */
 'use strict';
 var eventSim = {};
 
@@ -212,6 +211,8 @@ eventSim.click = function (x,y){
   el.focus();
 };
 
+eventSim.lastMouseOver = {};
+
 eventSim.mouseover = function (x,y,type) {
   var el = document.elementFromPoint(x,y);
   
@@ -219,23 +220,25 @@ eventSim.mouseover = function (x,y,type) {
     return false;
   }
 
-  if(el.className.indexOf('reproduce-hover') === -1 && type === 'mouseover') {
+  if(type === 'mouseover') {
     el.className += ' reproduce-hover';
-  } else {
-    el.className = el.className.replace('reproduce-hover', '');
-    console.log('czemu nie');
-  }
+    $(el).trigger('mouseover');
 
-  $(el).trigger(type);
+    el = document.elementFromPoint(this.lastMouseOver.xPos, this.lastMouseOver.yPos);
+    el.className = el.className.replace('reproduce-hover', '');
+    $(el).trigger('mouseout');
+    this.lastMouseOver = {
+      xPos: x,
+      yPos: y
+    };
+  }
 };
 
 module.exports = eventSim;
 },{}],"/Users/mateusz/Desktop/reproduce/src/events/mouseClick.js":[function(require,module,exports){
-/*global require, window, console, module, document, setTimeout */
 'use strict';
 
-var mouseClick = {},
-    eventSim = require('./eventSimulation');
+var mouseClick = {};
 
 mouseClick.setInitDate = function () {
   this.getInitDate = Date.now();
@@ -264,8 +267,7 @@ mouseClick.stop = function () {
 };
 
 module.exports = mouseClick;
-},{"./eventSimulation":"/Users/mateusz/Desktop/reproduce/src/events/eventSimulation.js"}],"/Users/mateusz/Desktop/reproduce/src/events/mouseHover.js":[function(require,module,exports){
-/*global require, window, console, module, setTimeout */
+},{}],"/Users/mateusz/Desktop/reproduce/src/events/mouseHover.js":[function(require,module,exports){
 'use strict';
 var mouseHover = {};
 
@@ -277,9 +279,6 @@ mouseHover.data = [];
 
 mouseHover.pushData = function (e) {
   var timeStamp = e.timeStamp - this.getInitDate;
-  if(e.type === 'mouseout') {
-    console.log('mouseout');
-  }
 
   mouseHover.data.push({
     type: e.type,
@@ -292,7 +291,6 @@ mouseHover.pushData = function (e) {
 mouseHover.record = function () {
   mouseHover.setInitDate();
   window.onmouseover = mouseHover.pushData.bind(this);
-  window.onmouseout = mouseHover.pushData.bind(this);
 };
 
 mouseHover.stop = function () {
@@ -465,7 +463,6 @@ window.setData = function (data) {
 
 
 },{"./events/mouseClick":"/Users/mateusz/Desktop/reproduce/src/events/mouseClick.js","./events/mouseHover":"/Users/mateusz/Desktop/reproduce/src/events/mouseHover.js","./events/mouseMove":"/Users/mateusz/Desktop/reproduce/src/events/mouseMove.js","./events/resize":"/Users/mateusz/Desktop/reproduce/src/events/resize.js","./events/scrollMove":"/Users/mateusz/Desktop/reproduce/src/events/scrollMove.js","./utils/play":"/Users/mateusz/Desktop/reproduce/src/utils/play.js","./utils/styles":"/Users/mateusz/Desktop/reproduce/src/utils/styles.js","circular-json":"/Users/mateusz/Desktop/reproduce/node_modules/circular-json/build/circular-json.node.js"}],"/Users/mateusz/Desktop/reproduce/src/utils/play.js":[function(require,module,exports){
-/*global require, window, console, module, document, setTimeout */
 'use strict';
 
 var play = {},
@@ -474,17 +471,17 @@ var play = {},
 
 play.start = function (data) {
   var fakeMouse = document.createElement('div');
-  fakeMouse.style.backgroundColor = '#00ff00';
+  fakeMouse.style.backgroundColor = '#ffdddd';
   fakeMouse.style.position = 'fixed';
   fakeMouse.style.top = 0;
   fakeMouse.style.left = 0;
-  fakeMouse.style.height = '4px';
-  fakeMouse.style.width = '4px';
+  fakeMouse.style.height = '8px';
+  fakeMouse.style.width = '8px';
   fakeMouse.style.zIndex = '99999999999';
   fakeMouse.class = 'fake-mouse';
 
   document.body.appendChild(fakeMouse);
-
+  
   if (data !== undefined) {
     data = CircularJSON.parse(data);
   } else {
@@ -506,8 +503,6 @@ play.start = function (data) {
           window.scroll(0, data[index].positionY);
         } else if (data[index].type === 'mouseover') {
           eventSim.mouseover(data[index].posX, data[index].posY, 'mouseover');
-        } else if (data[index].type === 'mouseout') {
-          eventSim.mouseover(data[index].posX, data[index].posY, 'mouseout');
         }
         
         if(index === data.length - 1) {
