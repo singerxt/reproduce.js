@@ -29,9 +29,8 @@ play.start = function (data) {
     (function(index, data) {
       setTimeout(function() {
         if (data[index].type === 'mousemove') {
-          fakeMouse.style.top = data[index].posY.toString() + 'px';
-          fakeMouse.style.top = data[index].posY + 'px';
-          fakeMouse.style.left = data[index].posX + 'px';
+          fakeMouse.style.top = (data[index].posY + 10) + 'px';
+          fakeMouse.style.left = (data[index].posX + 10) + 'px';
         } else if (data[index].type === 'resize') {
           document.body.style.width = data[index].width  + 'px';
         } else if (data[index].type === 'click') {
@@ -41,7 +40,7 @@ play.start = function (data) {
         } else if (data[index].type === 'mouseover') {
           eventSim.mouseover(data[index].posX, data[index].posY, 'mouseover');
         } else if (data[index].type === 'mouseout') {
-          eventSim.mouseover(data[index].posX, data[index].posY, 'out');
+          eventSim.mouseover(data[index].posX, data[index].posY, 'mouseout');
         }
         
         if(index === data.length - 1) {

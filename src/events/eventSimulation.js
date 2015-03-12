@@ -1,11 +1,10 @@
 /*global window, console, module, document, setTimeout, $ */
 'use strict';
-var eventSim = {},
-    $ = require('jQuery');
+var eventSim = {};
 
 eventSim.click = function (x,y){
   var ev = document.createEvent('MouseEvent'),
-      el = document.elementFromPoint(x - 5,y);
+      el = document.elementFromPoint(x,y);
   
   if(el === undefined) {
     return false;
@@ -33,15 +32,16 @@ eventSim.click = function (x,y){
 
 eventSim.mouseover = function (x,y,type) {
   var el = document.elementFromPoint(x,y);
-  console.log(el);
+  
   if(el === null) {
     return false;
   }
 
-  if(el.className.indexOf('reproduce-hover') === -1) {
+  if(el.className.indexOf('reproduce-hover') === -1 && type === 'mouseover') {
     el.className += ' reproduce-hover';
   } else {
     el.className = el.className.replace('reproduce-hover', '');
+    console.log('czemu nie');
   }
 
   $(el).trigger(type);
