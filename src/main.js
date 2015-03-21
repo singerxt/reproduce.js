@@ -35,7 +35,7 @@ window.stop = function () {
 };
 
 window.play = function () {
-  var data = getData();
+  var data = window.getData();
   play.start(data);
 };
 

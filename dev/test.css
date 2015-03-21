@@ -1,0 +1,35 @@
+.css-hover-test {
+  background: #99cc00;
+  width: 200px;
+  height: 200px;
+  float: left;
+}
+
+.css-hover-test:hover {
+  background: #ff0000;
+}
+
+.js-hover-test {
+  background: #cccccc;
+  width: 200px;
+  height: 200px;
+  float: left;
+}
+
+.css-hover-test {
+  background: #99cc00;
+  width: 200px;
+  height: 200px;
+  float: left;
+}
+
+.css-hover-test:hover {
+  background: #ff0000;
+}
+
+.js-hover-test {
+  background: #cccccc;
+  width: 200px;
+  height: 200px;
+  float: left;
+}

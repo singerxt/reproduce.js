@@ -1,4 +1,4 @@
-/*global require, window, console, module, document, setTimeout */
+/*global window, module, document */
 'use strict';
 var resize = {};
 
@@ -19,6 +19,10 @@ resize.pushData = function (e) {
 
 resize.bindresize = function () {
   window.onresize = this.pushData.bind(this); //others
+  this.pushData({
+    timeStamp: 0,
+    type: 'resize'
+  });
 };
 
 resize.record = function () {
