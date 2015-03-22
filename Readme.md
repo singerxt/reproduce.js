@@ -2,7 +2,7 @@
 
 Simple script which allow you to record your behaviours in browser.
 
-[https://raw.githack.com/singerxt/reproduce.js/master/dev/index.html](DEMO)
+https://raw.githack.com/singerxt/reproduce.js/master/dev/index.html
 
 ## Usage
 
