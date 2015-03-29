@@ -7,11 +7,13 @@ var mouseMove = require('./events/mouseMove'),
     resize = require('./events/resize'),
     styles = require('./utils/styles'),
     play = require('./utils/play'),
+    interfacer = require('./utils/interface'),
     CircularJSON = require('circular-json'),
     orginalTitle = document.title;
 
 window.onload = function () {
   styles.appendReproduceStyles();
+  interfacer.bindClickEvent();
 };
 
 window.record = function () {

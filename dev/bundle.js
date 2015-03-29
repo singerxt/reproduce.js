@@ -406,11 +406,13 @@ var mouseMove = require('./events/mouseMove'),
     resize = require('./events/resize'),
     styles = require('./utils/styles'),
     play = require('./utils/play'),
+    interfacer = require('./utils/interface'),
     CircularJSON = require('circular-json'),
     orginalTitle = document.title;
 
 window.onload = function () {
   styles.appendReproduceStyles();
+  interfacer.bindClickEvent();
 };
 
 window.record = function () {
@@ -457,7 +459,43 @@ window.setData = function (data) {
 };
 
 
-},{"./events/mouseClick":"/Users/mateusz/Desktop/reproduce/src/events/mouseClick.js","./events/mouseHover":"/Users/mateusz/Desktop/reproduce/src/events/mouseHover.js","./events/mouseMove":"/Users/mateusz/Desktop/reproduce/src/events/mouseMove.js","./events/resize":"/Users/mateusz/Desktop/reproduce/src/events/resize.js","./events/scrollMove":"/Users/mateusz/Desktop/reproduce/src/events/scrollMove.js","./utils/play":"/Users/mateusz/Desktop/reproduce/src/utils/play.js","./utils/styles":"/Users/mateusz/Desktop/reproduce/src/utils/styles.js","circular-json":"/Users/mateusz/Desktop/reproduce/node_modules/circular-json/build/circular-json.node.js"}],"/Users/mateusz/Desktop/reproduce/src/utils/play.js":[function(require,module,exports){
+},{"./events/mouseClick":"/Users/mateusz/Desktop/reproduce/src/events/mouseClick.js","./events/mouseHover":"/Users/mateusz/Desktop/reproduce/src/events/mouseHover.js","./events/mouseMove":"/Users/mateusz/Desktop/reproduce/src/events/mouseMove.js","./events/resize":"/Users/mateusz/Desktop/reproduce/src/events/resize.js","./events/scrollMove":"/Users/mateusz/Desktop/reproduce/src/events/scrollMove.js","./utils/interface":"/Users/mateusz/Desktop/reproduce/src/utils/interface.js","./utils/play":"/Users/mateusz/Desktop/reproduce/src/utils/play.js","./utils/styles":"/Users/mateusz/Desktop/reproduce/src/utils/styles.js","circular-json":"/Users/mateusz/Desktop/reproduce/node_modules/circular-json/build/circular-json.node.js"}],"/Users/mateusz/Desktop/reproduce/src/utils/interface.js":[function(require,module,exports){
+'use strict';
+var interfacer = {};
+
+interfacer.config = {
+  buttons: $('.reproduce-interface button')
+};
+
+interfacer.clickEvent = function (e) {
+  var opt = e.target.dataset.option;
+
+  switch (opt) {
+    case 'record':
+      window.record();
+      break;
+    case 'play': 
+      window.play();
+      break;
+    case 'stop': 
+      window.stop();
+      break;
+    case 'getData':
+      window.getData();
+      break;
+    case 'setData':
+      window.setData();
+      break;
+  }
+};
+
+interfacer.bindClickEvent = function () {
+  this.config.buttons.on('click', this.clickEvent);
+};
+
+module.exports = interfacer;
+
+},{}],"/Users/mateusz/Desktop/reproduce/src/utils/play.js":[function(require,module,exports){
 'use strict';
 
 var play = {},
