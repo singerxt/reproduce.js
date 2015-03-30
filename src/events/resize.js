@@ -11,7 +11,7 @@ resize.setInitDate = function () {
 resize.pushData = function (e) {
   var timeStamp = e.timeStamp - this.getInitDate;
   this.data.push({
-    width: window.innerWidth,
+    width: document.body.clientWidth,
     time: timeStamp,
     type: e.type
   });
