@@ -338,7 +338,7 @@ resize.setInitDate = function () {
 resize.pushData = function (e) {
   var timeStamp = e.timeStamp - this.getInitDate;
   this.data.push({
-    width: window.innerWidth,
+    width: document.body.clientWidth,
     time: timeStamp,
     type: e.type
   });
@@ -408,11 +408,13 @@ var mouseMove = require('./events/mouseMove'),
     play = require('./utils/play'),
     interfacer = require('./utils/interface'),
     CircularJSON = require('circular-json'),
+    createMirror = require('./utils/createMirror'),
     orginalTitle = document.title;
 
 window.onload = function () {
   styles.appendReproduceStyles();
   interfacer.bindClickEvent();
+  //createMirror.getLink();
 };
 
 window.record = function () {
@@ -459,7 +461,16 @@ window.setData = function (data) {
 };
 
 
-},{"./events/mouseClick":"/Users/mateusz/Desktop/reproduce/src/events/mouseClick.js","./events/mouseHover":"/Users/mateusz/Desktop/reproduce/src/events/mouseHover.js","./events/mouseMove":"/Users/mateusz/Desktop/reproduce/src/events/mouseMove.js","./events/resize":"/Users/mateusz/Desktop/reproduce/src/events/resize.js","./events/scrollMove":"/Users/mateusz/Desktop/reproduce/src/events/scrollMove.js","./utils/interface":"/Users/mateusz/Desktop/reproduce/src/utils/interface.js","./utils/play":"/Users/mateusz/Desktop/reproduce/src/utils/play.js","./utils/styles":"/Users/mateusz/Desktop/reproduce/src/utils/styles.js","circular-json":"/Users/mateusz/Desktop/reproduce/node_modules/circular-json/build/circular-json.node.js"}],"/Users/mateusz/Desktop/reproduce/src/utils/interface.js":[function(require,module,exports){
+},{"./events/mouseClick":"/Users/mateusz/Desktop/reproduce/src/events/mouseClick.js","./events/mouseHover":"/Users/mateusz/Desktop/reproduce/src/events/mouseHover.js","./events/mouseMove":"/Users/mateusz/Desktop/reproduce/src/events/mouseMove.js","./events/resize":"/Users/mateusz/Desktop/reproduce/src/events/resize.js","./events/scrollMove":"/Users/mateusz/Desktop/reproduce/src/events/scrollMove.js","./utils/createMirror":"/Users/mateusz/Desktop/reproduce/src/utils/createMirror.js","./utils/interface":"/Users/mateusz/Desktop/reproduce/src/utils/interface.js","./utils/play":"/Users/mateusz/Desktop/reproduce/src/utils/play.js","./utils/styles":"/Users/mateusz/Desktop/reproduce/src/utils/styles.js","circular-json":"/Users/mateusz/Desktop/reproduce/node_modules/circular-json/build/circular-json.node.js"}],"/Users/mateusz/Desktop/reproduce/src/utils/createMirror.js":[function(require,module,exports){
+var createMirror = {};
+
+createMirror.getLink = function () {
+  var source = prompt('Please enter source code', '');
+};
+
+module.exports = createMirror;
+
+},{}],"/Users/mateusz/Desktop/reproduce/src/utils/interface.js":[function(require,module,exports){
 'use strict';
 var interfacer = {};
 
@@ -504,14 +515,7 @@ var play = {},
 
 play.start = function (data) {
   var fakeMouse = document.createElement('div');
-  fakeMouse.style.backgroundColor = '#ffdddd';
-  fakeMouse.style.position = 'fixed';
-  fakeMouse.style.top = 0;
-  fakeMouse.style.left = 0;
-  fakeMouse.style.height = '8px';
-  fakeMouse.style.width = '8px';
-  fakeMouse.style.zIndex = '99999999999';
-  fakeMouse.class = 'fake-mouse';
+  fakeMouse.className = 'fake-mouse';
 
   document.body.appendChild(fakeMouse);
   

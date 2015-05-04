@@ -9,11 +9,13 @@ var mouseMove = require('./events/mouseMove'),
     play = require('./utils/play'),
     interfacer = require('./utils/interface'),
     CircularJSON = require('circular-json'),
+    createMirror = require('./utils/createMirror'),
     orginalTitle = document.title;
 
 window.onload = function () {
   styles.appendReproduceStyles();
   interfacer.bindClickEvent();
+  //createMirror.getLink();
 };
 
 window.record = function () {

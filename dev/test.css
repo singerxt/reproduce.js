@@ -33,3 +33,11 @@
   height: 200px;
   float: left;
 }
+
+.fake-mouse {
+  background: url("img/pointerm.png");
+  width: 20px;
+  height: 20px;
+  position: fixed;
+  z-index: 99999999;
+}
