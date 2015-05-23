@@ -1,38 +1,26 @@
 {
-  "name": "reproduce.js",
-  "version": "1.0.0",
-  "description": "Record your bug!",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "name": "Reproduce JS",
+  "version": "0.0.1",
+  "description": "",
+  "homepage": "https://github.com/singerxt/reproduce.js",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/singerxt/reproduce.js"
   },
-  "keywords": [
-    "browserify",
-    "karma",
-    "phantomjs",
-    "mocha",
-    "watchify",
-    "kit",
-    "starter-kit",
-    "boilerplate"
-  ],
-  "author": "zzarcon",
-  "license": "MIT",
   "bugs": {
-    "url": ""
+    "url": "https://github.com/singerxt/reproduce.js/issues"
   },
-  "homepage": "",
   "devDependencies": {
-    "karma": "^0.12.31",
-    "karma-browserify": "^3.0.3",
-    "karma-mocha": "^0.1.10",
-    "karma-phantomjs-launcher": "^0.1.4",
-    "mocha": "^2.1.0",
-    "watchify": "^2.4.0",
-    "circular-json": "0.1.6"
-  }
+    "babelify": "~5.0.3",
+    "browser-sync": "^1.7.1",
+    "browserify": "^6.3.3",
+    "gulp": "~3.8.10",
+    "gulp-rename": "^1.2.0",
+    "lodash": "^2.4.1",
+    "rimraf": "~2.2.8",
+    "watchify": "^2.1.1",
+    "vinyl-source-stream": "^1.0.0"
+  },
+  "author": "Mateusz Śpiewak",
+  "license": "MIT"
 }
