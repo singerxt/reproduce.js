@@ -1,14 +1,16 @@
+import {EventSimulator} from '../core/Event/EventSimulator.js';
+
 /**
- * Player
+ * Event Recorder
  *
- *
- * @constructor
- * @params {array}
+ * @Author Mateusz Śpiewak
+ * @params data
  */
 
 class Player {
   constructor (data) {
     this._data = data;
+    this.ES = new EventSimulator();
   }
 
   /**
@@ -21,7 +23,7 @@ class Player {
     for(let i = 0; i < this._data.length; i++) {
 
       /**
-       * Need to create new scope
+       * Need to create new scopecc
        */
 
       (function (i, data) {
@@ -29,9 +31,11 @@ class Player {
           let etype = data[i].type;
 
           if(etype === 'mousemove') {
-            that.mouseMove(data[i]);
+            that.ES.mouseMove(data[i], that._pointer);
           } else if (etype === 'scroll') {
-            that.mouseMove(data[i]);
+            that.ES.scroll(data[i]);
+          } else if (etype === 'click') {
+            that.ES.click(data[i]);
           }
 
           /**
@@ -40,28 +44,11 @@ class Player {
            */
 
           if(i === data.length - 1) {
-            this._pointer.parentNode.removeChild(this._pointer);
+            that._pointer.parentNode.removeChild(that._pointer);
           }
         },data[i].time)
       })(i, this._data)
     }
-  }
-
-  /**
-   * Move mouse pinter
-   */
-
-  mouseMove (data) {
-    this._pointer.style.left = data.posX + 'px';
-    this._pointer.style.top = data.posY + 'px';
-  };
-
-  /**
-   * Scroll animation
-   */
-
-  scroll (data) {
-    window.scroll(0, data.positionY);
   }
 
   /**
@@ -70,19 +57,19 @@ class Player {
    */
 
   createMousePointer () {
-    var pointer = document.createElement('div');
+    let pointer = document.createElement('div');
 
     /**
      * set initial styles for mouse pointer
      */
 
     pointer.className = 'reproduce-pointer';
-    pointer.style.width = '10px';
-    pointer.style.height = '10px';
+    pointer.style.width = '20px';
+    pointer.style.height = '20px';
     pointer.style.position = 'fixed';
     pointer.style.top = '10px';
     pointer.style.left = '10px';
-    pointer.style.background = '#99cc00';
+    pointer.style.background = 'url("img/pointerm.png")';
 
     /**
      * Append pointer

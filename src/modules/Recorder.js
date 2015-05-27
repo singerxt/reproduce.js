@@ -1,9 +1,9 @@
 import {EventRecorder} from '../core/Event/EventRecorder.js'
 
 /**
- * Recorder
+ * Event Recorder
  *
- * @constructor
+ * @Author Mateusz Śpiewak
  */
 
 class Recorder {
