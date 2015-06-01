@@ -86,6 +86,8 @@ class EventSimulator {
       _eventMouseOver = new Event('mouseover', options),
       _eventMouseOut = new Event('mouseout', options);
 
+    $elem.className += ' reproduce-hover ';
+    $elemOld.className = $elemOld.className.replace('reproduce-hover', '');
     $elem.dispatchEvent(_eventMouseOver);
     $elemOld.dispatchEvent(_eventMouseOut);
 

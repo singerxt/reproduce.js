@@ -1,0 +1,12 @@
+a {
+  color: #99cc00;
+}
+
+a:hover {
+  color: #004444;
+  text-decoration: none;
+}
+
+button:hover {
+  background-color: #00ff00;
+}
