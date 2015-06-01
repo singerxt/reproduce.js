@@ -36,6 +36,8 @@ class Player {
             that.ES.scroll(data[i]);
           } else if (etype === 'click') {
             that.ES.click(data[i]);
+          } else if (etype === 'mouseover') {
+            that.ES.mouseOver(data[i]);
           }
 
           /**

@@ -11,7 +11,10 @@ class EventSimulator {
    */
 
   constructor () {
-    this._lastMouseOver = {};
+    this._lastMouseOver = {
+      x: 0,
+      y: 0
+    };
   }
 
   /**
@@ -70,6 +73,23 @@ class EventSimulator {
     },100);
 
     $elem.dispatchEvent(_event);
+  }
+
+  mouseOver (data) {
+    let $elem = document.elementFromPoint(data.posX, data.posY),
+        $elemOld = document.elementFromPoint(this._lastMouseOver.posX, this._lastMouseOver.posY),
+      options =  {
+        view: window,
+        bubbles: true,
+        cancelable: true
+      },
+      _eventMouseOver = new Event('mouseover', options),
+      _eventMouseOut = new Event('mouseout', options);
+
+    $elem.dispatchEvent(_eventMouseOver);
+    $elemOld.dispatchEvent(_eventMouseOut);
+
+    this._lastMouseOver = data;
   }
 }
 
