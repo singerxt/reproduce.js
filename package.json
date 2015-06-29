@@ -1,5 +1,5 @@
 {
-  "name": "Reproduce JS",
+  "name": "ReproduceJS",
   "version": "0.0.1",
   "description": "",
   "homepage": "https://github.com/singerxt/reproduce.js",
@@ -19,7 +19,8 @@
     "lodash": "^2.4.1",
     "rimraf": "~2.2.8",
     "watchify": "^2.1.1",
-    "vinyl-source-stream": "^1.0.0"
+    "vinyl-source-stream": "^1.0.0",
+    "jquery": "2.1.4"
   },
   "author": "Mateusz Śpiewak",
   "license": "MIT"

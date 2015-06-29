@@ -38,6 +38,8 @@ class Player {
             that.ES.click(data[i]);
           } else if (etype === 'mouseover') {
             that.ES.mouseOver(data[i]);
+          } else if (etype === 'resize') {
+            that.ES.resize(data[i]);
           }
 
           /**

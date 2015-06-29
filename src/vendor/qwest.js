@@ -2,7 +2,10 @@
 
 ;(function(context,name,definition){
   if(typeof module!='undefined' && module.exports){
-    module.exports=definition;
+    console.log(definition);
+    module.exports={
+      dupa: 'dupa'
+    };
   }
   else if(typeof define=='function' && define.amd){
     define(definition);

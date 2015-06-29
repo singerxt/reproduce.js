@@ -1,0 +1,91 @@
+{
+  "App": {
+    "Name": "api-example-com"
+  },
+  "Server": {
+    "Port": 1337,
+    "Name": "api.example.com",
+    "DefaultVersion": "1.0.0",
+    "Acceptable": [ "application/json" ],
+    "ThrottleRate": 50,
+    "ThrottleBurst": 100
+  },
+  "Logging": {
+    "Name": "AuditLogging",
+    "Dir": "./logs/",
+    "Loggly": {
+      "Enabled": false,
+      "Tags": [ "api-example-com" ],
+      "Endpoint": "https://logs-01.loggly.com/inputs/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/"
+    }
+  },
+  "CORS": {
+    "Credentials": false,
+    "Origins": [],
+    "Headers": []
+  },
+  "Security": {
+    "UseAuth": true,
+    "UseACL": true,
+    "Scheme": "Custom",
+    "StringToSign": "X-Custom-Date",
+    "AllowAnonymous": true,
+    "Users": [
+      {
+        "name": "anonymous",
+        "role": "anonymous"
+      },
+      {
+        "name": "dominik",
+        "role": "admin",
+        "key": "df7cab0c18e3c3d82b977bcd667d1aeb70ada9fd",
+        "secret": "33yrDBjjw9grl3vNZn0a63Ctqf0="
+      },
+      {
+        "name": "not_dominik",
+        "role": "user",
+        "key": "df7cab0c18e3c3d82b977bcd667d1aeb70ada9fe",
+        "secret": "33yrDBjjw9grl3vNZn0a63Ctqf1"
+      }
+    ],
+    "ACL": {
+      "Rules": [
+        {
+          "roles": ["admin"],
+          "allows": [
+            {
+              "resources": [
+                "/#1.0.0",
+                "/secret#1.0.0",
+                "/secret/:id#1.0.0"
+              ],
+              "permissions": "*"
+            }
+          ]
+        },
+        {
+          "roles": ["user"],
+          "allows": [
+            {
+              "resources": [
+                "/#1.0.0",
+                "/secret#1.0.0",
+                "/secret/:id#1.0.0"
+              ],
+              "permissions": "get"
+            }
+          ]
+        },
+        {
+          "roles": ["anonymous"],
+          "allows": [
+            {
+              "resources": "/#1.0.0",
+              "permissions": "get"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

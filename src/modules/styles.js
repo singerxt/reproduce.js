@@ -7,6 +7,7 @@ import {qwest} from '../vendor/qwest.js';
 
 class PrepareStyles {
   constructor () {
+    console.log(qwest);
     this.$linkedCSS = document.querySelectorAll('link[rel="stylesheet"]');
     this.$inlinedCSS = document.querySelectorAll('style');
     this.reproduceClass = '.reproduce-hover';
